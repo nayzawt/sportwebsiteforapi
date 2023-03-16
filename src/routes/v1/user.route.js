@@ -9,14 +9,14 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageUsers'), upload.single('file'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('getUsers'),upload.single('file'), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
+  .get(auth('getUsers'),validate(userValidation.getUsers), userController.getUsers);
   
 router
   .route('/:userId')
-  .get(auth('getUsers'),upload.single('file'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('manageUsers'),upload.single('file'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'),upload.single('file'), validate(userValidation.deleteUser), userController.deleteUser);
+  .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
+  .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
+  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
 router
   .route('/public/latest_users')

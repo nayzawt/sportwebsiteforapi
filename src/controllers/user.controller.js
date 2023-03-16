@@ -7,7 +7,6 @@ const { userService } = require('../services');
 const createUser = catchAsync(async (req, res) => {
   console.log(req)
   let formData = req.body
-  formData.image = req.file.filename
   const user = await userService.createUser(formData);
   res.status(httpStatus.CREATED).send(user);
 });
@@ -29,7 +28,6 @@ const getUser = catchAsync(async (req, res) => {
 
 const updateUser = catchAsync(async (req, res) => {
   let formData = req.body
-  formData.image = req.file.filename
   const user = await userService.updateUserById(req.params.userId, formData);
   res.send(user);
 });

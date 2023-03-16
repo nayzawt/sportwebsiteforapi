@@ -35,6 +35,11 @@ app.use(express.json({limit:'60mb'}));
 app.use(express.urlencoded({ extended: true }));
 
 // sanitize request data
+app.use((req, res, next) => {
+  if (req.body.desc) req.EditorJsBody = req.body.desc;
+  next();
+});
+
 app.use(xss());
 app.use(mongoSanitize());
 
@@ -54,9 +59,9 @@ if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
 
-app.use('/', (req, res) => {
-  res.send('Hello')
-})
+// app.use('/', (req, res) => {
+//   res.send('Hello')
+// })
 // v1 api routes
 app.use('/v1', routes);
 

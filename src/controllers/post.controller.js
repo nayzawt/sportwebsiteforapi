@@ -8,7 +8,7 @@ const multer = require('multer');
 const createPost = catchAsync(async (req, res) => {
   let formData = req.body
   formData.userId = req.user._id
-  formData.image = req.file.filename
+  formData.desc = req.EditorJsBody
   const post = await postService.createPost(formData);
   await categoryService.updateNumberOfPosts(formData.category);
   await userService.updateNumberOfPosts(formData.userId)
@@ -25,7 +25,7 @@ const getPosts = catchAsync(async (req, res) => {
 });
 
 const getPost = catchAsync(async (req, res) => {
-  const post = await postService.getPostById(req.params.postId, req.file);
+  const post = await postService.getPostById(req.params.postId);
   if (!post) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');
   }
@@ -34,7 +34,7 @@ const getPost = catchAsync(async (req, res) => {
 
 const updatePost = catchAsync(async (req, res) => {
   let formData = req.body
-  formData.image = req.file.filename
+  formData.desc = req.EditorJsBody
   const post = await postService.updatePostById(req.params.postId, formData);
    await categoryService.updateNumberOfPosts(req.body.category);
 
@@ -63,7 +63,7 @@ const getLatestPosts = catchAsync(async (req, res) => {
 });
 
 const getLatestPost = catchAsync(async (req, res) => {
-  const post = await postService.getLatestPostById(req.params.postId, req.file);
+  const post = await postService.getLatestPostById(req.params.postId);
   if (!post) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');
   }
@@ -71,12 +71,12 @@ const getLatestPost = catchAsync(async (req, res) => {
 });
 
 const viewCountsPost = catchAsync(async (req, res) => {
-  const post = await postService.getPostById(req.params.postId, req.file);
+  const post = await postService.getPostById(req.params.postId);
   if (!post) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post not found');
   }
   res.send(post);
-  const update = await postService.updatePostById(req.params.postId,{viewCounts: post.viewCounts + 1}, req.file );
+  const update = await postService.updatePostById(req.params.postId, {viewCounts: post.viewCounts + 1});
   res.send(update)
 });
 
